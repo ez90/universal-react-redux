@@ -21,3 +21,8 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/App.css
+
+
+# mac
+.DS_Store
+.idea
