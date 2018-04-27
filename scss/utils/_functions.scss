@@ -1,0 +1,12 @@
+// Rem converter
+// @param {Number} $pixels - value in pixel to convert
+// @param {Number} $browser-context - Size base reference for conversion
+@function rem($pixels, $context: $browser-context) {
+    @if (unitless($pixels)) {
+        $pixels: $pixels * 1px;
+    }
+    @if (unitless($context)) {
+        $context: $context * 1px;
+    }
+    @return $pixels / $context * 1rem;
+}

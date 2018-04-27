@@ -1,0 +1,32 @@
+// Base size reference for rem conversion
+$browser-context: 16;
+
+// Colors
+$color-black: #000000;
+$color-white: #ffffff;
+
+// Brands colors
+$color-pinterest: rgb(203, 32, 39);
+$color-twitter: rgb(0, 172, 237);
+$color-facebook: rgb(59, 89, 152);
+$color-google: rgb(221, 75, 57);
+$color-instagram: rgb(235, 78, 79);
+$color-youtube: rgb(253, 46, 0);
+$color-linkedin: rgb(0, 123, 181);
+$color-slideshare: rgb(246, 146, 50);
+
+// Fonts
+$font-font-name: Montserrat, sans-serif;
+
+// Medias helpers
+$media-xs: "screen and (max-width: $screen-xs-max)";
+$media-sm: "screen and (min-width: $screen-sm-min) and (max-width: $screen-sm-max)";
+$media-md: "screen and (min-width: $screen-md-min) and (max-width: $screen-md-max)";
+$media-lg: "screen and (min-width: $screen-lg-min)";
+
+$media-sm-min: "screen and (min-width: $screen-sm-min)";
+$media-md-min: "screen and (min-width: $screen-md-min)";
+$media-lg-min: "screen and (min-width: $screen-lg-min)";
+
+$media-sm-max: "screen and (max-width: $screen-sm-max)";
+$media-md-max: "screen and (max-width: $screen-md-max)";

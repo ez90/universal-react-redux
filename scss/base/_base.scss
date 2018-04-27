@@ -1,0 +1,40 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+body {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+}
+
+a {
+    color: inherit;
+    outline: 0;
+
+    @include on-event() {
+        outline: 0;
+        text-decoration: none;
+    }
+}
+
+.video-wrapper {
+    height: 0;
+    padding-bottom: 56.25%;
+    position: relative;
+}
+
+.video-wrapper iframe {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
