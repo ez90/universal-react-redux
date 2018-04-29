@@ -17,7 +17,6 @@ class TitleAndMetaTags extends Component {
 
         return (
             <Helmet title={title} >
-
                 <meta name="description" content={description || defaultDescription} />
                 <link rel="image_src" type="image/jpeg" href={image}/>
 

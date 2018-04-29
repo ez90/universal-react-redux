@@ -28,6 +28,7 @@ class App extends Component {
                         <Route path={`/`} exact component={HomePage}/>
                         <Route path={`/about/`} strict component={AboutPage}/>
                         <Route component={NotFoundPage}/>
+                        <Redirect to={`/`}/>
                     </Switch>
                 </div>
             </Router>
