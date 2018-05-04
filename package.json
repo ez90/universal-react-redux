@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.1.0",
+    "express": "^4.16.3",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-rename": "^1.2.2",
@@ -14,6 +15,7 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",
+    "react-loadable": "^5.4.0",
     "react-redux-app-container": "^0.3.2",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
@@ -23,6 +25,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:server": "NODE_ENV=production node server/bootstrap.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

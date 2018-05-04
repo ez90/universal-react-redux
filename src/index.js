@@ -10,14 +10,14 @@ import createSagaMiddleware from 'redux-saga'
 import { ReactReduxAppContainer } from 'react-redux-app-container'
 import { ConnectedRouter } from 'react-router-redux'
 
-import rootSaga from './sagas'
+import sagas from './sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
 const history = createHistory()
 const store = createStore(history, sagaMiddleware)
 
-sagaMiddleware.run(rootSaga)
+sagaMiddleware.run(sagas)
 
 ReactDOM.render(
     <ReactReduxAppContainer store={store}>
