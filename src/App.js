@@ -1,10 +1,5 @@
 import React, { Component } from 'react'
-import {
-    BrowserRouter as Router,
-    Route,
-    Switch,
-    Redirect
-} from "react-router-dom"
+import { Route, Switch, Redirect } from "react-router-dom"
 import TitleAndMetaTags from './components/TitleAndMetaTags'
 import Menu from './components/Menu'
 import AboutPage from './pages/AboutPage'
