@@ -5,13 +5,24 @@ import Menu from './components/Menu'
 import AboutPage from './pages/AboutPage'
 import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
+import Loadable from 'react-loadable'
 
 import './App.css'
+
+// const LoadableHomePage = Loadable({
+//     loader: () => import('./pages/HomePage'),
+//     loading: <div/>,
+// });
+//
+// const LoadableAboutPage = Loadable({
+//     loader: () => import('./pages/AboutPage'),
+//     loading: <div/>,
+// });
 
 class App extends Component {
     render() {
         return (
-            <div className="root">
+            <div>
                 <TitleAndMetaTags
                     title={'Test title 2'}
                     description={'Test desc'}
@@ -19,10 +30,9 @@ class App extends Component {
                 />
                 <Menu />
                 <Switch>
-                    <Route path={`/`} exact component={HomePage}/>
-                    <Route path={`/about/`} strict component={AboutPage}/>
+                    <Route exact path={`/`} component={HomePage}/>
+                    <Route path={`/about/`} component={AboutPage}/>
                     <Route component={NotFoundPage}/>
-                    <Redirect to={`/`}/>
                 </Switch>
             </div>
         )

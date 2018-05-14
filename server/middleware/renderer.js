@@ -7,23 +7,38 @@ import { Helmet } from 'react-helmet'
 // Import Static router to handle SSR case
 import { StaticRouter } from 'react-router-dom'
 
+// Import saga, we need to run it before rendering
 import sagas from '../../src/sagas'
+
+// Import saga, we need to run it before rendering
+import store from '../store'
 
 // import our main App component
 import App from '../../src/App'
 
 // import the manifest generated with the create-react-app build
 import manifest from '../../build/asset-manifest.json'
+
 // function to extract js assets from the manifest
 const extractAssets = (assets, chunks) => Object.keys(assets)
     .filter(asset => chunks.indexOf(asset.replace('.js', '')) > -1)
     .map(k => assets[k])
 
-
 const path = require("path")
 const fs = require("fs")
 
-export default (store) => (req, res, next) => {
+const render = (template, { head, html, reduxState, extraChunks }) => {
+    return template// Write the string version of our HEAD
+        .replace('</head>', `${head}</head>`)
+        // write the React app
+        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
+        // write the string version of our state
+        .replace('__REDUX_STATE__={}', `__REDUX_STATE__=${reduxState}`)
+        // append the extra js assets
+        .replace('</body>', extraChunks.join('') + '</body>')
+}
+
+export default (req, res, next) => {
     // get the html file created with the create-react-app build
     const filePath = path.resolve(__dirname, '..', '..', 'build', 'index.html')
 
@@ -55,31 +70,22 @@ export default (store) => (req, res, next) => {
 
 
             // The context has been filled by ReactRouter if there is any redirection
+            // Somewhere a `<Redirect>` was rendered
             if (context.url) {
-                res.writeHead(302, { Location: context.url })
-                res.end()
-                return
+                res.redirect(302, { Location: context.url })
             }
 
-            // get the stringified state
+            // Get the stringified state from redux store
             const reduxState = JSON.stringify(store.getState())
 
-            // map required assets to script tags
+            // Map required assets to script tags
             const extraChunks = extractAssets(manifest, modules)
                 .map(c => `<script type="text/javascript" src="/${c}"></script>`)
 
 
-            // now inject the rendered app into our html and send it to the client
+            // Now inject the rendered app into our html and send it to the client
             return res.send(
-                htmlData
-                // Write the string version of our HEAD
-                    .replace('</head>', `${head}</head>`)
-                    // write the React app
-                    .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
-                    // write the string version of our state
-                    .replace('__REDUX_STATE__={}', `__REDUX_STATE__=${reduxState}`)
-                    // append the extra js assets
-                    .replace('</body>', extraChunks.join('') + '</body>')
+                render(htmlData, { head, html, reduxState, extraChunks })
             )
         })
     })
