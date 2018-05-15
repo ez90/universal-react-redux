@@ -2,22 +2,20 @@ import React, { Component } from 'react'
 import { Route, Switch, Redirect } from "react-router-dom"
 import TitleAndMetaTags from './components/TitleAndMetaTags'
 import Menu from './components/Menu'
-import AboutPage from './pages/AboutPage'
-import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
 import Loadable from 'react-loadable'
 
 import './App.css'
 
-// const LoadableHomePage = Loadable({
-//     loader: () => import('./pages/HomePage'),
-//     loading: <div/>,
-// });
-//
-// const LoadableAboutPage = Loadable({
-//     loader: () => import('./pages/AboutPage'),
-//     loading: <div/>,
-// });
+const LoadableHomePage = Loadable({
+    loader: () => import('./pages/HomePage'),
+    loading: () => <div>loading...</div>,
+});
+
+const LoadableAboutPage = Loadable({
+    loader: () => import('./pages/AboutPage'),
+    loading: () => <div>loading...</div>,
+});
 
 class App extends Component {
     render() {
@@ -30,8 +28,8 @@ class App extends Component {
                 />
                 <Menu />
                 <Switch>
-                    <Route exact path={`/`} component={HomePage}/>
-                    <Route path={`/about/`} component={AboutPage}/>
+                    <Route exact path={`/`} component={LoadableHomePage}/>
+                    <Route path={`/about/`} component={LoadableAboutPage}/>
                     <Route component={NotFoundPage}/>
                 </Switch>
             </div>

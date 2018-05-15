@@ -1,4 +1,4 @@
-// Bootstrap sets requirements before running SSR
+// Set up requirements before running SSR
 
 require('url-loader')
 require('file-loader')

@@ -5,7 +5,7 @@ import serverRenderer from './middleware/renderer'
 
 const path = require("path")
 
-// initialize the application and create the routes
+// initialize the application
 const app = express()
 
 // Port to be used by express
@@ -16,7 +16,7 @@ const PORT = 3001
 
 // Set up route handling, include static assets
 app.use(indexController)
-app.use(express.static(path.resolve(__dirname, '..', '..', 'build'), { maxAge: '30d' },))
+app.use(express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' },))
 app.use('/', serverRenderer)
 
 // start the app after preloading all loadable components on the server

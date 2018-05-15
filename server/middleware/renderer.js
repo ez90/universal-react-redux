@@ -27,15 +27,21 @@ const extractAssets = (assets, chunks) => Object.keys(assets)
 const path = require("path")
 const fs = require("fs")
 
-const render = (template, { head, html, reduxState, extraChunks }) => {
-    return template// Write the string version of our HEAD
-        .replace('</head>', `${head}</head>`)
-        // write the React app
-        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)
-        // write the string version of our state
-        .replace('__REDUX_STATE__={}', `__REDUX_STATE__=${reduxState}`)
-        // append the extra js assets
-        .replace('</body>', extraChunks.join('') + '</body>')
+/**
+ * Prepare html response
+ *
+ * @param template
+ * @param head
+ * @param html
+ * @param preloadedState
+ * @param extraChunks
+ */
+const PrepareHtml = (template, { head, html, preloadedState, extraChunks }) => {
+    return template
+        .replace('</head>', `${head}</head>`) // String version of our HEAD
+        .replace('<div id="root"></div>', `<div id="root">${html}</div>`)  // Write the React app
+        .replace('__REDUX_STATE__={}', `__REDUX_STATE__=${preloadedState}`)  // String version of our state
+        .replace('</body>', extraChunks.join('') + '</body>') // Append the extra js assets
 }
 
 export default (req, res, next) => {
@@ -48,16 +54,17 @@ export default (req, res, next) => {
             return res.status(404).end()
         }
 
+        // Wait for saga
         store.runSaga(sagas).done.then(() => {
 
             const modules = []
             const context = {}
 
-            // render head with helmet as a string
+            // Prepare head as a string (with Helmet)
             const helmet = Helmet.renderStatic()
             const head = helmet.title.toString() + helmet.meta.toString() + helmet.link.toString()
 
-            // render the app as a string
+            // Prepare the app as a string
             const html = ReactDOMServer.renderToString(
                 <Loadable.Capture report={m => modules.push(m)}>
                     <ReactReduxAppContainer store={store}>
@@ -68,25 +75,24 @@ export default (req, res, next) => {
                 </Loadable.Capture>
             )
 
-
             // The context has been filled by ReactRouter if there is any redirection
-            // Somewhere a `<Redirect>` was rendered
+            // (Somewhere a `<Redirect>` was rendered)
             if (context.url) {
                 res.redirect(302, { Location: context.url })
             }
 
-            // Get the stringified state from redux store
-            const reduxState = JSON.stringify(store.getState())
+            // Prepare the state as string from redux store
+            const preloadedState = JSON.stringify(store.getState())
 
-            // Map required assets to script tags
+            // Map required assets to script tags to prepare chunks insertions
             const extraChunks = extractAssets(manifest, modules)
                 .map(c => `<script type="text/javascript" src="/${c}"></script>`)
 
+            // Now inject the rendered app into our html
+            const PreparedHtml = PrepareHtml(htmlData, { head, html, preloadedState, extraChunks })
 
-            // Now inject the rendered app into our html and send it to the client
-            return res.send(
-                render(htmlData, { head, html, reduxState, extraChunks })
-            )
+            // Send it to the client
+            return res.send(PreparedHtml)
         })
     })
 }
