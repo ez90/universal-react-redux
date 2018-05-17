@@ -1,7 +1,6 @@
 import express from 'express'
 import Loadable from 'react-loadable'
 import indexController from './controllers/index'
-import serverRenderer from './middleware/renderer'
 
 const path = require("path")
 
@@ -16,8 +15,6 @@ const PORT = 3001
 
 // Set up route handling, include static assets
 app.use(indexController)
-app.use(express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' },))
-app.use('/', serverRenderer)
 
 // start the app after preloading all loadable components on the server
 Loadable.preloadAll().then(() => {
