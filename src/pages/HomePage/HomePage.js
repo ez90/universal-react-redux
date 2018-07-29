@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { login, logout } from 'ducks/loginFlow'
 
 class HomePage extends Component {
-    static propTypes = {}
 
     render() {
 
-        const { error, loading, items } = this.props
+        const { error, loading, items, login, logout } = this.props
 
         let entries = items.map(item => (
             <li key={item.id}>{item.title}</li>
@@ -22,9 +21,13 @@ class HomePage extends Component {
         }
 
         return (
-            <ul>
-                {entries}
-            </ul>
+            <div>
+                <button onClick={(e) => login('machette@hotmail.fr', 'kojihu') }>LOGIN</button>
+                <button onClick={(e) => logout() }>LOGOUT</button>
+                <ul>
+                    {entries}
+                </ul>
+            </div>
         )
     }
 }
@@ -34,5 +37,8 @@ export default connect(
         items: state.reddit.items,
         loading: state.reddit.loading,
         error: state.reddit.error
-    }), {}
+    }), {
+        login,
+        logout,
+    }
 )(HomePage)
